@@ -17,8 +17,8 @@
 #include <netdb.h>
 #include <unistd.h>
 
-#define INVALID_SOCKET          ((SOCKET)(~0))
-#define SOCKET_ERROR            (-1)
+#define INVALID_SOCKET ((SOCKET)(~0))
+#define SOCKET_ERROR   (-1)
 
 #define SD_RECEIVE SHUT_RD
 #define SD_SEND SHUT_WR
@@ -271,7 +271,7 @@ int GameNetwork::socketConnect(bool doConnect)
         hints.ai_protocol=IPPROTO_TCP;
 
         // Resolve the server address and port
-        iResult=getaddrinfo("192.168.1.107", DEFAULT_PORT, &hints, &result); //argv[1] //localhost
+        iResult=getaddrinfo("127.0.0.1", DEFAULT_PORT, &hints, &result); //argv[1] //localhost
         if(iResult!=0)
         {
             printf("getaddrinfo failed with error: %d\n", iResult);
