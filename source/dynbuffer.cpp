@@ -2,18 +2,30 @@
 
 #include <iostream>
 #include <assert.h>  
+#include <cstring>
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
+#endif
 
+#ifdef _WIN32
 typedef BOOL(WINAPI * PFNWGLSWAPINTERVALEXTPROC) (int interval);
 typedef int (WINAPI * PFNWGLGETSWAPINTERVALEXTPROC) (void);
 PFNWGLSWAPINTERVALEXTPROC pwglSwapIntervalEXT=0;
 PFNWGLGETSWAPINTERVALEXTPROC pwglGetSwapIntervalEXT=0;
 #define wglSwapIntervalEXT      pwglSwapIntervalEXT
 #define wglGetSwapIntervalEXT   pwglGetSwapIntervalEXT
-#endif//_WIN32
+
+#else
+
+//~ typedef void ( * PFNGLXSWAPINTERVALEXTPROC) (Display* dpy, GLXDrawable drawable, int interval);
+
+//~ #include <GL/gl.h>
+//~ #include <GL/glew.h>
+//~ #include <GL/glxew.h>
+
+#endif //_WIN32
 
 DynBuffer::DynBuffer()
 {
@@ -40,8 +52,8 @@ DynBuffer::DynBuffer()
 
     // get OpenGL info
 
-    glInfo.getInfo();
-    //glInfo.printSelf();
+    glinfo.getInfo();
+    //glinfo.printSelf();
 
     // init 2 texture objects
     glGenTextures(1, &textureId);
@@ -55,7 +67,7 @@ DynBuffer::DynBuffer()
 
 #ifdef _WIN32
     // check PBO is supported by your video card
-    if(glInfo.isExtensionSupported("GL_ARB_pixel_buffer_object"))
+    if(glinfo.isExtensionSupported("GL_ARB_pixel_buffer_object"))
     {
         // get pointers to GL functions
 //        glGenBuffersARB=(PFNGLGENBUFFERSARBPROC)wglGetProcAddress("glGenBuffersARB");
@@ -84,7 +96,7 @@ DynBuffer::DynBuffer()
     }
 
     // check EXT_swap_control is supported
-    if(glInfo.isExtensionSupported("WGL_EXT_swap_control"))
+    if(glinfo.isExtensionSupported("WGL_EXT_swap_control"))
     {
         // get pointers to WGL functions
 //        wglSwapIntervalEXT=(PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
@@ -99,7 +111,7 @@ DynBuffer::DynBuffer()
 
 
 #else // for linux, do not need to get function pointers, it is up-to-date
-    if(glInfo.isExtensionSupported("GL_ARB_pixel_buffer_object"))
+    if(glinfo.isExtensionSupported("GL_ARB_pixel_buffer_object"))
     {
         pboSupported=true;
         pboMode=1;
@@ -143,8 +155,10 @@ DynBuffer::~DynBuffer()
 
 void DynBuffer::setVsync(bool enabled)
 {
+#ifdef _WIN32
+
     // check EXT_swap_control is supported
-    if(glInfo.isExtensionSupported("WGL_EXT_swap_control"))
+    if(glinfo.isExtensionSupported("WGL_EXT_swap_control"))
     {
         // get pointers to WGL functions
 //        wglSwapIntervalEXT=(PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
@@ -164,6 +178,25 @@ void DynBuffer::setVsync(bool enabled)
             //std::cout << "Video card supports WGL_EXT_swap_control." << std::endl;
   //      }
     }
+    
+#else
+
+            //~ PFNGLXSWAPINTERVALEXTPROC glXSwapIntervalEXT=NULL;
+
+            //~ if (/* GLX_EXT_swap_control supported */) {
+            //~     glXSwapIntervalEXT = (PFNGLXSWAPINTERVALEXTPROC)glXGetProcAddressARB((const GLubyte*)"glXSwapIntervalEXT");
+            //~ }
+
+            //~ if(enabled)
+            //~ {
+            //~     glXSwapIntervalEXT(1);
+            //~ }
+            //~ else
+            //~ {
+            //~     glXSwapIntervalEXT(0);
+            //~ }
+
+#endif
 }
 
 

@@ -1,7 +1,7 @@
 #include "voxelquest/uniformbuffer.h"
 #include "voxelquest/helperfuncs.h"
 
-char *BUF_NAMES[]=
+const char *BUF_NAMES[]=
 {
     "ublock0",
     "ublock1",

@@ -6,9 +6,34 @@
 
 #ifdef _WIN32
 #include <Ws2tcpip.h>
+
+#else
+#define closesocket close
+
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <unistd.h>
+
+#define INVALID_SOCKET          ((SOCKET)(~0))
+#define SOCKET_ERROR            (-1)
+
+#define SD_RECEIVE SHUT_RD
+#define SD_SEND SHUT_WR
+#define SD_BOTH SHUT_RDWR
 #endif 
 
 #include <iostream>
+#include <cstring>
+#include <cstdio>
+
+static void ClearWinSock() {
+#if defined WIN32
+	WSACleanup();
+#endif
+}
 
 GameNetwork::GameNetwork()
 {
@@ -230,6 +255,7 @@ int GameNetwork::socketConnect(bool doConnect)
 
     if(doConnect)
     {
+#ifdef _WIN32
         // Initialize Winsock
         iResult=WSAStartup(MAKEWORD(2, 2), &wsaData);
         if(iResult!=0)
@@ -237,8 +263,9 @@ int GameNetwork::socketConnect(bool doConnect)
             printf("WSAStartup failed with error: %d\n", iResult);
             return 1;
         }
+#endif
 
-        ZeroMemory(&hints, sizeof(hints));
+        memset(&hints, 0, sizeof(hints));
         hints.ai_family=AF_UNSPEC;
         hints.ai_socktype=SOCK_STREAM;
         hints.ai_protocol=IPPROTO_TCP;
@@ -248,7 +275,7 @@ int GameNetwork::socketConnect(bool doConnect)
         if(iResult!=0)
         {
             printf("getaddrinfo failed with error: %d\n", iResult);
-            WSACleanup();
+            ClearWinSock();
             return 1;
         }
 
@@ -261,8 +288,12 @@ int GameNetwork::socketConnect(bool doConnect)
                 ptr->ai_protocol);
             if(ConnectSocket==INVALID_SOCKET)
             {
+#ifdef _WIN32
                 printf("socket failed with error: %ld\n", WSAGetLastError());
-                WSACleanup();
+#else
+                printf("socket failed with error: %ld: %s\n", errno, strerror(errno));
+#endif
+                ClearWinSock();
                 return 1;
             }
 
@@ -282,7 +313,7 @@ int GameNetwork::socketConnect(bool doConnect)
         if(ConnectSocket==INVALID_SOCKET)
         {
             printf("Unable to connect to server!\n");
-            WSACleanup();
+            ClearWinSock();
             return 1;
         }
 
@@ -295,9 +326,13 @@ int GameNetwork::socketConnect(bool doConnect)
         iResult=shutdown(ConnectSocket, SD_SEND);
         if(iResult==SOCKET_ERROR)
         {
-            printf("shutdown failed with error: %d\n", WSAGetLastError());
+#ifdef _WIN32
+            printf("shutdown failed with error: %ld\n", WSAGetLastError());
+#else
+            printf("shutdown failed with error: %ld: %s\n", errno, strerror(errno));
+#endif
             closesocket(ConnectSocket);
-            WSACleanup();
+            ClearWinSock();
             return 1;
         }
 
@@ -306,7 +341,7 @@ int GameNetwork::socketConnect(bool doConnect)
 
         // cleanup
         closesocket(ConnectSocket);
-        WSACleanup();
+        ClearWinSock();
 
         isConnected=false;
     }
@@ -341,7 +376,11 @@ void GameNetwork::socketRecv()
     }
     else
     {
-        printf("recv failed with error: %d\n", WSAGetLastError());
+#ifdef _WIN32
+        printf("recv failed with error: %ld\n", WSAGetLastError());
+#else
+        printf("recv failed with error: %ld: %s\n", errno, strerror(errno));
+#endif
     }
 }
 
@@ -370,9 +409,13 @@ void GameNetwork::socketSend()
 
     if(iResult==SOCKET_ERROR)
     {
-        printf("send failed with error: %d\n", WSAGetLastError());
+#ifdef _WIN32
+        printf("send failed with error: %ld\n", WSAGetLastError());
+#else
+        printf("send failed with error: %ld: %s\n", errno, strerror(errno));
+#endif
         closesocket(ConnectSocket);
-        WSACleanup();
+        ClearWinSock();
     }
 
     //printf("Bytes Sent: %ld\n", iResult);

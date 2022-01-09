@@ -4,6 +4,7 @@
 #include "voxelquest/enums.h"
 
 #include <string>
+#include <cmath>
 
 //int RUN_COUNT;
 
@@ -346,7 +347,7 @@ const static int MAX_VG_FBOS=2;
 const static int MAX_VGT_FBOS=2;
 //int CUR_VGT_FBO=0;
 
-const static float M_PI=3.14159265359f;
+//const static float M_PI=3.14159265359f;
 
 const static float TBDIR_ARR[]={
     0.0f,

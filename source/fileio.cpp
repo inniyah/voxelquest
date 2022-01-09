@@ -12,10 +12,9 @@
 
 bool createFolder(std::string folderNameStr)
 {
-
+#ifdef _WIN32
     std::wstring folderNameWstr=s2ws(folderNameStr);
 
-#ifdef _WIN32
     if(
         CreateDirectoryW(folderNameWstr.c_str(), NULL)
         )

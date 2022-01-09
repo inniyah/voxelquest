@@ -46,28 +46,28 @@ int FBOWrapper::init(
 
     switch(_slot)
     {
-    case 0:
+    case (GLenum)0:
         slot=GL_COLOR_ATTACHMENT0_EXT;
         break;
-    case 1:
+    case (GLenum)1:
         slot=GL_COLOR_ATTACHMENT1_EXT;
         break;
-    case 2:
+    case (GLenum)2:
         slot=GL_COLOR_ATTACHMENT2_EXT;
         break;
-    case 3:
+    case (GLenum)3:
         slot=GL_COLOR_ATTACHMENT3_EXT;
         break;
-    case 4:
+    case (GLenum)4:
         slot=GL_COLOR_ATTACHMENT4_EXT;
         break;
-    case 5:
+    case (GLenum)5:
         slot=GL_COLOR_ATTACHMENT5_EXT;
         break;
-    case 6:
+    case (GLenum)6:
         slot=GL_COLOR_ATTACHMENT6_EXT;
         break;
-    case 7:
+    case (GLenum)7:
         slot=GL_COLOR_ATTACHMENT7_EXT;
         break;
     }

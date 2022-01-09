@@ -253,10 +253,10 @@ void GameOrg::saveOrgToFile(std::string fileName)
 
     nodeToJSON(&rootObj, baseNode); //(rootObj->object_value["rootVal"])
 
-
+    std::string str = rootObj->Stringify();
     saveFileString(
         "data\\orgdata\\"+fileName+".js",
-        &(rootObj->Stringify())
+        &str
     );
 
     setBinding(actorId, true);

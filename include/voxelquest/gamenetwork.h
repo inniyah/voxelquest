@@ -12,6 +12,8 @@ class Singleton;
 #define WIN32_LEAN_AND_MEAN
 //#include "windows.h"
 #include "winsock2.h"
+#else
+#define SOCKET int
 #endif
 
 struct NetworkAction
@@ -87,7 +89,10 @@ public:
 
     FIVector4 tempVecs[8];
 
+#ifdef _WIN32
     WSADATA wsaData;
+#endif
+
     SOCKET ConnectSocket;
 
     int recvPosInBytes;

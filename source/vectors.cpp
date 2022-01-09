@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <cfloat>
 
 float RAND_COUNTER=(float)rand();
 float RAND_COUNTER2=(float)rand();

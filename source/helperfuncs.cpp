@@ -24,6 +24,7 @@ std::string f__s(float f) {
 	return std::to_string(f);
 }
 
+#ifdef _WIN32
 std::wstring s2ws(const std::string& s)
 {
     int len;
@@ -35,6 +36,7 @@ std::wstring s2ws(const std::string& s)
     delete[] buf;
     return r;
 }
+#endif
 
 std::string getPaddedInt(int curInt, int maxInt) {
 	std::string res = i__s(curInt);

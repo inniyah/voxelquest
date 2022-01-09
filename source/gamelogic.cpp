@@ -748,8 +748,6 @@ bool GameLogic::addGroupToStack(
 	
 void GameLogic::remGroupFromStack(int opCode) {
 		
-		
-		
 	pathSearchStack.pop_back();
 }
 	
@@ -771,13 +769,6 @@ void GameLogic::fillAllGroups(
 	int begGroupId = begHolder->getGroupId(begInd);
 	int endGroupId = endHolder->getGroupId(endInd);
 		
-	if ((begGroupId > -1) && (endGroupId > -1)) {
-			
-	}
-	else {
-		goto FILL_GROUPS_RETURN;
-	}
-		
 	globEndGroupId = endGroupId;
 	int curGroupId = 0;
 	int groupIdTo = 0;
@@ -787,6 +778,15 @@ void GameLogic::fillAllGroups(
 	bool foundIt = false;
 		
 	int lastIndex = -1;
+		
+	int frontIndex = 0;
+		
+	if ((begGroupId > -1) && (endGroupId > -1)) {
+		
+	}
+	else {
+		goto FILL_GROUPS_RETURN;
+	}
 		
 	foundIt = addGroupToStack(
 		NULL,
@@ -801,8 +801,6 @@ void GameLogic::fillAllGroups(
 	}
 		
 	bool notFound;
-		
-	int frontIndex = 0;
 		
 	while (
 		(frontIndex < pathSearchStack.size()) && //(pathSearchStack.size() > 0) &&

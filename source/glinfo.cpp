@@ -9,12 +9,15 @@ using namespace gl;
 #include "windows.h"
 #endif
 
+#ifdef _WIN32
+typedef const char* (WINAPI * PFNWGLGETEXTENSIONSSTRINGARBPROC)(HDC hdc);
+PFNWGLGETEXTENSIONSSTRINGARBPROC wglGetExtensionsStringARB=0;
+#endif
+
 #include <sstream>
 #include <iostream>
 #include <algorithm>
-
-typedef const char* (WINAPI * PFNWGLGETEXTENSIONSSTRINGARBPROC)(HDC hdc);
-PFNWGLGETEXTENSIONSSTRINGARBPROC wglGetExtensionsStringARB=0;
+#include <cstring>
 
 ///////////////////////////////////////////////////////////////////////////////
 // extract openGL info

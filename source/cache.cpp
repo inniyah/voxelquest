@@ -236,10 +236,11 @@ bool saveCacheMetaData()
     {
         return false;
     }
+    std::string str = cacheMetaJS->Stringify();
     if(
         saveFileString(
         curCLFull+"meta.js",
-        &(cacheMetaJS->Stringify())
+        &str
         )
         )
     {

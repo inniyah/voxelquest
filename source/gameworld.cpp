@@ -3503,6 +3503,22 @@ void GameWorld::initMap()
     mapWidth=(float)fbow->width;
     mapHeight=(float)fbow->height;
 
+    int wb=blocksPerWorld;
+    int hb=blocksPerWorld;
+
+    int *streetFlagsV=NULL;
+    int *streetFlagsH=NULL;
+
+    floatAndIndex *oceanRes=NULL;
+
+    //bool notCovered = true;
+    int id=1;
+    int totCount;
+    int fillColor;
+    bool incId;
+
+    int blockMod=g_settings.holdersPerBlock;
+
     goto DONE_WITH_MAP;
 
     std::cout<<"start place cities\n";
@@ -3663,7 +3679,6 @@ void GameWorld::initMap()
     fbow2->setAllPixels(pathChannel, 0);
     fbow2->setAllPixels(houseChannel, 0);
 
-    int blockMod=g_settings.holdersPerBlock;
     for(k=0; k<totSize; k++)
     {
         curInd=k;
@@ -3834,7 +3849,7 @@ void GameWorld::initMap()
 
     std::cout<<"end link close cities\n";
 
-    floatAndIndex *oceanRes=new floatAndIndex[numProvinces * numProvinces];
+    oceanRes=new floatAndIndex[numProvinces * numProvinces];
 
     for(i=0; i<numProvinces * numProvinces; i++)
     {
@@ -3956,12 +3971,6 @@ void GameWorld::initMap()
     Renderer::copyFBO("swapFBO0", "cityFBO");
     fbow2->getPixels();
     //fbow2->updateMips();
-
-    //bool notCovered = true;
-    int id=1;
-    int totCount;
-    int fillColor;
-    bool incId;
 
     std::cout<<"start road regions\n";
 
@@ -4166,15 +4175,10 @@ void GameWorld::initMap()
     fbow2->getPixels();
 
 
-
-
-
-
-
     // generate streets
 
-    int *streetFlagsV=new int[w]; //runs vertical
-    int *streetFlagsH=new int[h]; //runs horizontal
+    streetFlagsV=new int[w]; //runs vertical
+    streetFlagsH=new int[h]; //runs horizontal
 
     for(i=0; i<w; i++)
     {
@@ -4405,8 +4409,6 @@ void GameWorld::initMap()
 
 
 
-    int wb=blocksPerWorld;
-    int hb=blocksPerWorld;
     int blockInd;
 
     for(i=0; i<wb; i++)

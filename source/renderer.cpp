@@ -1168,11 +1168,13 @@ void Renderer::bindFBO(std::string fboName, int swapFlag, int doClear)
 
         if(swapFlag==0)
         {
-            fbos=FBOManager::getFBOByName(fboName+"1");
+            std::string fboNameNum = fboName+"1";
+            fbos=FBOManager::getFBOByName(fboNameNum);
         }
         else
         {
-            fbos=FBOManager::getFBOByName(fboName+"0");
+            std::string fboNameNum = fboName+"0";
+            fbos=FBOManager::getFBOByName(fboNameNum);
         }
 
     }
@@ -1241,11 +1243,13 @@ void Renderer::sampleFBO(
     {
         if(swapFlag==0)
         {
-            fbos=FBOManager::getFBOByName(fboName+"0");
+            std::string fboNameNum = fboName+"0";
+            fbos=FBOManager::getFBOByName(fboNameNum);
         }
         else
         {
-            fbos=FBOManager::getFBOByName(fboName+"1");
+            std::string fboNameNum = fboName+"1";
+            fbos=FBOManager::getFBOByName(fboNameNum);
         }
     }
 
@@ -1278,11 +1282,13 @@ void Renderer::unsampleFBO(
     {
         if(swapFlag==0)
         {
-            fbos=FBOManager::getFBOByName(fboName+"0");
+            std::string fboNameNum = fboName+"0";
+            fbos=FBOManager::getFBOByName(fboNameNum);
         }
         else
         {
-            fbos=FBOManager::getFBOByName(fboName+"1");
+            std::string fboNameNum = fboName+"1";
+            fbos=FBOManager::getFBOByName(fboNameNum);
         }
     }
 
