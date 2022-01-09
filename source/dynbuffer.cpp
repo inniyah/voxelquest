@@ -19,11 +19,7 @@ PFNWGLGETSWAPINTERVALEXTPROC pwglGetSwapIntervalEXT=0;
 
 #else
 
-//~ typedef void ( * PFNGLXSWAPINTERVALEXTPROC) (Display* dpy, GLXDrawable drawable, int interval);
-
-//~ #include <GL/gl.h>
-//~ #include <GL/glew.h>
-//~ #include <GL/glxew.h>
+//~ #include <glbinding/gl/extension.h>
 
 #endif //_WIN32
 
